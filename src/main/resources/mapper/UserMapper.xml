@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xzydemo.demo.persistence.UserMapper">
+    <select id="inseruser_class" parameterType="xzydemo.demo.domain.User">
+        insert into `user_class` (`useropenid`,`name`,`classid`)
+        values(#{useropenid},#{name},#{classid})
+    </select>
+    <select id="deleteuser_class" parameterType="xzydemo.demo.domain.User">
+        delete from `user` where username=#{username} and class_id=#{class_id}
+    </select>
+    <select id="deleteClass_user" parameterType="java.lang.String">
+        delete from `user` where class_id=#{Class_id}
+    </select>
+    <select id="getusersfromclass" parameterType="java.lang.String" resultType="xzydemo.demo.domain.User">
+        SELECT
+            useropenid,
+            name,
+            classid
+        FROM user_class
+        WHERE classid=#{classid}
+    </select>
+    <select id="finduserinclass" parameterType="java.lang.String" resultType="xzydemo.demo.domain.User">
+        SELECT
+            useropenid,
+            name,
+            classid
+        FROM user_class
+        WHERE classid=#{classid} and useropenid=#{useropenid}
+    </select>
+</mapper>

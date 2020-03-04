@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xzydemo.demo.persistence.UserFriendsMapper">
+    <select id="addFriend" parameterType="java.lang.String">
+        insert into `xzyfriends` (`account`,`friend`)
+        values(#{userAccount},#{friendAccount});
+    </select>
+    <select id="friendAdd" parameterType="java.lang.String">
+        insert into `xzyfriends` (`account`,`friend`)
+        values(#{friendAccount},#{userAccount});
+    </select>
+    <select id="deleteFriend" parameterType="java.lang.String">
+        DELETE FROM `xzyfriends` WHERE `account` =#{userAccount};
+    </select>
+    <select id="friendDelete" parameterType="java.lang.String">
+        DELETE FROM `xzyfriends` WHERE `account` =#{friendAccount};
+    </select>
+    <select id="getFriends" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT `friend` from `xzyfriends` WHERE `account` = #{userAccount};
+    </select>
+    <select id="getFriendName" parameterType="java.lang.String" resultType="java.lang.String">
+        select `nickname` from `xzy_user_information` where `_uuid` = #{friendAccount};
+    </select>
+</mapper>

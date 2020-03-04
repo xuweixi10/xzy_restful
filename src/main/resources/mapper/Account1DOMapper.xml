@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xzydemo.demo.persistence.Account1DOMapper">
+
+  <resultMap id="BaseResultMap" type="xzydemo.demo.domain.Account1DO">
+    <id column="accountId" jdbcType="CHAR" property="accountid" />
+    <result column="realname" jdbcType="VARCHAR" property="realname" />
+    <result column="age" jdbcType="INTEGER" property="age" />
+    <result column="has_married" jdbcType="TINYINT" property="hasMarried" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="addr" jdbcType="VARCHAR" property="addr" />
+  </resultMap>
+
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="xzydemo.demo.domain.Account1DOWithBLOBs">
+    <result column="picture" jdbcType="LONGVARBINARY" property="picture" />
+    <result column="self_introduce" jdbcType="LONGVARCHAR" property="selfIntroduce" />
+    <result column="requirement" jdbcType="LONGVARCHAR" property="requirement" />
+  </resultMap>
+
+
+  <sql id="Base_Column_List">
+    accountId, realname, age, has_married, province, addr
+  </sql>
+
+  <sql id="Blob_Column_List">
+    picture, self_introduce, requirement
+  </sql>
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from account
+    where accountId = #{accountid,jdbcType=CHAR}
+  </select>
+
+  <select id="selectWithConditionByProvince"  resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from account
+    where province in
+    <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </select>
+
+  <select id="selectWithConditionByHas_married"  resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from account
+    where has_married = #{hasMarried,jdbcType=TINYINT}
+  </select>
+
+  <select id="selectWithConditionByAge"  resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from account
+    where account.age &gt; #{min,jdbcType=INTEGER} and account.age &lt; #{max,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectAll" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from account
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from account
+    where accountId = #{accountid,jdbcType=CHAR}
+  </delete>
+
+
+  <insert id="insert" parameterType="xzydemo.demo.domain.Account1DOWithBLOBs">
+    insert into account (accountId, realname, age,
+      has_married, province, addr, 
+      picture, self_introduce, requirement
+      )
+    values (#{accountid,jdbcType=CHAR}, #{realname,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER},
+      #{hasMarried,jdbcType=TINYINT}, #{province,jdbcType=VARCHAR}, #{addr,jdbcType=VARCHAR}, 
+      #{picture,jdbcType=LONGVARBINARY}, #{selfIntroduce,jdbcType=LONGVARCHAR}, #{requirement,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+
+
+  <insert id="insertSelective" parameterType="xzydemo.demo.domain.Account1DOWithBLOBs">
+    insert into account
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="accountid != null">
+        accountId,
+      </if>
+      <if test="realname != null">
+        realname,
+      </if>
+      <if test="age != null">
+        age,
+      </if>
+      <if test="hasMarried != null">
+        has_married,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="addr != null">
+        addr,
+      </if>
+      <if test="picture != null">
+        picture,
+      </if>
+      <if test="selfIntroduce != null">
+        self_introduce,
+      </if>
+      <if test="requirement != null">
+        requirement,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="accountid != null">
+        #{accountid,jdbcType=CHAR},
+      </if>
+      <if test="realname != null">
+        #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null">
+        #{age,jdbcType=INTEGER},
+      </if>
+      <if test="hasMarried != null">
+        #{hasMarried,jdbcType=TINYINT},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="addr != null">
+        #{addr,jdbcType=VARCHAR},
+      </if>
+      <if test="picture != null">
+        #{picture,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="selfIntroduce != null">
+        #{selfIntroduce,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="requirement != null">
+        #{requirement,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+
+  <update id="updateByPrimaryKeySelective" parameterType="xzydemo.demo.domain.Account1DOWithBLOBs">
+    update account
+    <set>
+      <if test="realname != null">
+        realname = #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null">
+        age = #{age,jdbcType=INTEGER},
+      </if>
+      <if test="hasMarried != null">
+        has_married = #{hasMarried,jdbcType=TINYINT},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="addr != null">
+        addr = #{addr,jdbcType=VARCHAR},
+      </if>
+      <if test="picture != null">
+        picture = #{picture,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="selfIntroduce != null">
+        self_introduce = #{selfIntroduce,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="requirement != null">
+        requirement = #{requirement,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where accountId = #{accountid,jdbcType=CHAR}
+  </update>
+
+
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="xzydemo.demo.domain.Account1DOWithBLOBs">
+    update account
+    set realname = #{realname,jdbcType=VARCHAR},
+      age = #{age,jdbcType=INTEGER},
+      has_married = #{hasMarried,jdbcType=TINYINT},
+      province = #{province,jdbcType=VARCHAR},
+      addr = #{addr,jdbcType=VARCHAR},
+      picture = #{picture,jdbcType=LONGVARBINARY},
+      self_introduce = #{selfIntroduce,jdbcType=LONGVARCHAR},
+      requirement = #{requirement,jdbcType=LONGVARCHAR}
+    where accountId = #{accountid,jdbcType=CHAR}
+  </update>
+
+
+  <update id="updateByPrimaryKey" parameterType="xzydemo.demo.domain.Account1DO">
+    update account
+    set realname = #{realname,jdbcType=VARCHAR},
+      age = #{age,jdbcType=INTEGER},
+      has_married = #{hasMarried,jdbcType=TINYINT},
+      province = #{province,jdbcType=VARCHAR},
+      addr = #{addr,jdbcType=VARCHAR}
+    where accountId = #{accountid,jdbcType=CHAR}
+  </update>
+</mapper>

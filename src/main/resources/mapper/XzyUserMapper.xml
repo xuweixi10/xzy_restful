@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xzydemo.demo.persistence.XzyUserMapper">
+    <select id="RegisterAccount" parameterType="java.lang.String">
+        insert into `xzyuser` (`_uuid`,`account`,`password`)
+        values(#{_uuid},#{account},#{password})
+    </select>
+    <select id="InsertXzyUserInformation" parameterType="java.lang.String">
+        insert into `xzy_user_information` (`_uuid`,`account`,`nickname`,`sex`,`usersign`)
+        values(#{_uuid},#{account},#{nickname},#{sex},#{usersign})
+    </select>
+    <select id="InsertInformation" parameterType="java.lang.String">
+        insert into `informationuser` (`username`,`concatway`,`sex`,`userkey`,`age`)
+        values(#{username},#{concatway},#{sex},#{userkey},#{age})
+    </select>
+    <select id="UpdateXzyUserInformation" parameterType="java.lang.String">
+        update `xzy_user_information` set
+        `nickname`=#{nickname},`sex`=#{sex},`usersign`=#{usersign} where `_uuid` = #{_uuid}
+    </select>
+    <select id="Login" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT _uuid from `xzyuser`
+            where account=#{account} and password=#{password}
+    </select>
+    <select id="AccountIsExist" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT `account` from `xzyuser` WHERE `account` =#{account}
+    </select>
+    <select id="getXzyUser" parameterType="java.lang.String" resultType="xzydemo.demo.domain.Account.XzyUser">
+        select * from `xzy_user_information` where `account` = #{account}
+    </select>
+</mapper>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xzydemo.demo.persistence.ClassMapper">
+    <select id="getClassInfor" resultType="xzydemo.demo.domain.ClassInfor" >
+        SELECT
+            id AS id,
+            name AS ClassName,
+            people AS people,
+            descn AS descn,
+            time AS Classtime
+
+        FROM class_information
+    </select>
+    <select id="getClassDetails" parameterType="java.lang.String" resultType="xzydemo.demo.domain.Class">
+        SELECT
+        id AS Class_id,
+        name AS Class_name,
+        time AS Class_time,
+        presenter AS Presenter,
+        address AS Class_address,
+        people AS people,
+        descn AS descn,
+        descn1 AS descn1,
+        descn2 AS descn2
+        FROM class_information
+        WHERE id=#{Class_id}
+    </select>
+    <select id="InsertClass" parameterType="xzydemo.demo.domain.Class">
+        insert into `class_information` (`id`,`name`,`time`,`presenter`,`address`,`people`,`descn`,`descn2`,`descn3`)
+        values(#{Class_id}, #{Class_name}, #{Class_time}, #{Presenter}, #{Class_address},  #{people}, #{descn}, #{descn2},#{descn3})
+    </select>
+    <select id="DeleteClass" parameterType="java.lang.String">
+        delete from `class_information` where id=#{Class_id}
+    </select>
+    <select id="ReduceClasspeople" parameterType="java.lang.String">
+        update `class_information`  set people=people-1 where id=#{classid}
+    </select>
+</mapper>
